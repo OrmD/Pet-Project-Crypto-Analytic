@@ -1,0 +1,82 @@
+/* Обнуляємо стилі для всіх елементів */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	text-decoration: none;
+	list-style: none;
+	border: none;
+	outline: none;
+}
+
+/* Глобальні стилі для body */
+body {
+	font-family: sans-serif; /* Встановлюємо стандартний шрифт */
+	line-height: 1.5; /* Покращуємо читабельність */
+	background-color: #fff; /* Білий фон за замовчуванням */
+	color: #333; /* Темно-сірий колір тексту */
+}
+
+/* Стилі для заголовків */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: normal; /* Встановлюємо нормальну товщину шрифтів */
+	margin: 0; /* Скидаємо відступи */
+}
+
+/* Виправлення для списків */
+ol,
+ul {
+	list-style-type: none; /* Вимикаємо маркери списків */
+}
+
+/* Виправлення для таблиць */
+table {
+	width: 100%; /* Максимальна ширина таблиці */
+}
+
+/* Виправлення для інпутів, кнопок і інших елементів форми */
+input,
+button,
+select,
+textarea {
+	appearance: none; /* Вимикаємо стилі по замовчуванню для елементів форми */
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0;
+	margin: 0;
+	font-family: inherit; /* Спадкуємо шрифт */
+	font-size: inherit;
+	color: inherit;
+	cursor: pointer;
+}
+
+/* Стилі для картинок */
+img {
+	max-width: 100%; /* Робимо зображення адаптивними */
+	height: auto;
+	display: block; /* Виправлення для некоректного відступу */
+}
+
+/* Виправлення для anchor (посилань) */
+a {
+	text-decoration: none; /* Вимикаємо підкреслення */
+	color: inherit; /* Спадкуємо колір тексту */
+}
+
+/* Виправлення для блоків */
+blockquote {
+	margin: 0;
+	padding: 0;
+	quotes: none;
+}
