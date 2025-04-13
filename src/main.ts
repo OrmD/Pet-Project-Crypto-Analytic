@@ -1,5 +1,6 @@
 import { getApi } from "./getAPI.ts";
 import "./reset.css";
 import "./style.css";
-
-getApi();
+document.addEventListener("DOMContentLoaded", () => {
+  getApi(); // ✅ викликається тільки один раз при завантаженні
+});
