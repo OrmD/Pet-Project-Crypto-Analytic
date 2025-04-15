@@ -1,5 +1,9 @@
 const tbody = document.querySelector("tbody") as HTMLTableSectionElement;
 
+const btns = document.querySelector(
+  ".table__buttons"
+) as HTMLButtonElement | null;
+
 const btnPrice = document.querySelector(
   ".btn-price"
 ) as HTMLButtonElement | null;
@@ -45,6 +49,7 @@ export async function getApi(): Promise<Coin[] | null> {
     return null;
   }
 }
+
 const data = await getApi();
 console.log(data);
 const sliceArray = slicedArray(data, 13);
@@ -52,14 +57,30 @@ const sliceArray = slicedArray(data, 13);
 if (sliceArray !== null) {
   createDataTable(sliceArray, tbody);
 }
-btnPrice?.addEventListener("click", (event: MouseEvent) => {
-  console.log(data);
 
-  if (data !== null) {
-    return sortPrice(data);
+let typeSort: "asc" | "desc" | "start" = "start";
+function sortingPrice(): void {
+  if (sliceArray !== null) {
+    if (typeSort === "start") {
+      typeSort = "asc";
+    } else if (typeSort === "asc") {
+      typeSort = "desc";
+    } else if (typeSort === "desc") {
+      typeSort = "start";
+    }
+
+    const sorted = sortArray(sliceArray, typeSort); // створення копії
+    createDataTable(sorted, tbody);
+  }
+}
+
+btns?.addEventListener("click", (event: MouseEvent) => {
+  const target = event.target as HTMLButtonElement;
+
+  if (target.className === "btn-price") {
+    sortingPrice();
   }
 });
-
 function createDataTable(array: Coin[], elem: HTMLTableSectionElement) {
   let rowsHTML = ""; // змінна для накопичення HTML-рядків
   array.forEach((el, index) => {
@@ -86,8 +107,15 @@ function slicedArray(array: Coin[] | null, numberSlice: number): Coin[] | null {
   }
   return null;
 }
-function sortPrice(array: Coin[]): Coin[] {
-  return array.sort((a, b) => b.current_price - a.current_price);
+function sortArray(array: Coin[], order: "asc" | "desc" | "start"): Coin[] {
+  if (order === "start") {
+    return array;
+  }
+  return [...array].sort((a, b) =>
+    order === "asc"
+      ? b.current_price - a.current_price
+      : a.current_price - b.current_price
+  );
 }
 
 btnUpdate?.addEventListener("click", () => getApi());
