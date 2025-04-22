@@ -59,7 +59,7 @@ if (sliceArray !== null) {
 }
 
 let typeSort: "asc" | "desc" | "start" = "start";
-function sortingPrice(): void {
+function sortingPrice(columnSorted: string): void {
   if (sliceArray !== null) {
     if (typeSort === "start") {
       typeSort = "asc";
@@ -69,20 +69,32 @@ function sortingPrice(): void {
       typeSort = "start";
     }
 
-    const sorted = sortArray(sliceArray, typeSort); // створення копії
+    const sorted = sortArray(sliceArray, typeSort, columnSorted); // створення копії
     createDataTable(sorted, tbody);
   }
 }
 
-btns?.addEventListener("click", (event: MouseEvent) => {
-  const target = event.target as HTMLButtonElement;
+const svgArrow: string = `<svg height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 330" xml:space="preserve" className="svg-arrow">
+<path d="M15 180h263.787l-49.394 49.394c-5.858 5.857-5.858 15.355 0 21.213C232.322 253.535 236.161 255 240 255s7.678-1.465 10.606-4.394l75-75c5.858-5.857 5.858-15.355 0-21.213l-75-75c-5.857-5.857-15.355-5.857-21.213 0-5.858 5.857-5.858 15.355 0 21.213L278.787 150H15c-8.284 0-15 6.716-15 15s6.716 15 15 15z"/></svg>`;
 
+btns?.addEventListener("click", (event: MouseEvent): void => {
+  const target = event.target as HTMLButtonElement;
   if (target.className === "btn-price") {
-    sortingPrice();
+    sortingPrice("Price");
+    console.log(target);
+  } else if (target.className === "btn-change") {
+    sortingPrice("Price change");
+  } else if (target.className === "btn-change-percent") {
+    sortingPrice("Price change %");
+  } else {
+    console.log("Для кнопик не назначено операцій");
   }
 });
-function createDataTable(array: Coin[], elem: HTMLTableSectionElement) {
+function createDataTable(array: Coin[] | null, elem: HTMLTableSectionElement) {
   let rowsHTML = ""; // змінна для накопичення HTML-рядків
+  if (array === null) {
+    return console.error(Error, "Данні массиву відсутні");
+  }
   array.forEach((el, index) => {
     rowsHTML += `
 		<tr class="table__body-row">
@@ -107,15 +119,38 @@ function slicedArray(array: Coin[] | null, numberSlice: number): Coin[] | null {
   }
   return null;
 }
-function sortArray(array: Coin[], order: "asc" | "desc" | "start"): Coin[] {
+function sortArray(
+  array: Coin[],
+  order: "asc" | "desc" | "start",
+  columnSort: string
+): Coin[] {
   if (order === "start") {
     return array;
   }
-  return [...array].sort((a, b) =>
-    order === "asc"
-      ? b.current_price - a.current_price
-      : a.current_price - b.current_price
-  );
+
+  if (columnSort === "Price") {
+    return [...array].sort((a, b) =>
+      order === "asc"
+        ? b.current_price - a.current_price
+        : a.current_price - b.current_price
+    );
+  } else if (columnSort === "Price change") {
+    return [...array].sort((a, b) =>
+      order === "asc"
+        ? b.price_change_24h - a.price_change_24h
+        : a.price_change_24h - b.price_change_24h
+    );
+  } else if (columnSort === "Price change %") {
+    return [...array].sort((a, b) =>
+      order === "asc"
+        ? b.price_change_percentage_24h - a.price_change_percentage_24h
+        : a.price_change_percentage_24h - b.price_change_percentage_24h
+    );
+  }
+  return array;
 }
 
-btnUpdate?.addEventListener("click", () => getApi());
+btnUpdate?.addEventListener("click", () => {
+  getApi();
+  createDataTable(sliceArray, tbody);
+});
