@@ -47,12 +47,16 @@ td {
 }
 .table__buttons {
 	margin-bottom: 10px;
+	display: flex;
 }
 button {
 	border: 3px solid rgb(85, 85, 90);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	color: #fff;
 	border-radius: 8px;
-	padding: 7px;
+	padding: 7px 1px 7px 15px;
 	margin-right: 7px;
 	text-transform: uppercase;
 	letter-spacing: 0;
@@ -69,4 +73,17 @@ button:hover {
 }
 .btn-change-percent {
 	background-color: #002efcf1;
+}
+svg {
+	margin-bottom: 2px;
+	opacity: 0;
+}
+
+.up {
+	opacity: 1;
+	transform: rotate(90deg);
+}
+.down {
+	opacity: 1;
+	transform: rotate(-90deg);
 }

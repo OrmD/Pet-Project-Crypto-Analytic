@@ -73,23 +73,50 @@ function sortingPrice(columnSorted: string): void {
     createDataTable(sorted, tbody);
   }
 }
+const svgIcon = document.querySelector(".svg-arrow") as SVGSVGElement;
+const svgIcon2 = document.querySelector(".svg-arrow-2") as SVGSVGElement;
+const svgIcon3 = document.querySelector(".svg-arrow-3") as SVGSVGElement;
 
-const svgArrow: string = `<svg height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 330" xml:space="preserve" className="svg-arrow">
-<path d="M15 180h263.787l-49.394 49.394c-5.858 5.857-5.858 15.355 0 21.213C232.322 253.535 236.161 255 240 255s7.678-1.465 10.606-4.394l75-75c5.858-5.857 5.858-15.355 0-21.213l-75-75c-5.857-5.857-15.355-5.857-21.213 0-5.858 5.857-5.858 15.355 0 21.213L278.787 150H15c-8.284 0-15 6.716-15 15s6.716 15 15 15z"/></svg>`;
+function manipulateClass(elem: SVGSVGElement): void {
+  if (!elem.classList.contains("up") && !elem.classList.contains("down")) {
+    elem.classList.add("up");
+  } else if (elem.classList.contains("up")) {
+    elem.classList.replace("up", "down");
+  } else if (elem.classList.contains("down")) {
+    elem.classList.remove("down");
+  }
+}
+
+function deletedClass(el2: SVGSVGElement, el3: SVGSVGElement): void {
+  if (el2.classList.contains("up") || el2.classList.contains("down")) {
+    el2.classList.remove("up", "down");
+  }
+  if (el3.classList.contains("up") || el3.classList.contains("down")) {
+    el3.classList.remove("up", "down");
+  }
+}
 
 btns?.addEventListener("click", (event: MouseEvent): void => {
   const target = event.target as HTMLButtonElement;
+
   if (target.className === "btn-price") {
     sortingPrice("Price");
+    deletedClass(svgIcon2, svgIcon3);
+    manipulateClass(svgIcon);
     console.log(target);
   } else if (target.className === "btn-change") {
     sortingPrice("Price change");
+    deletedClass(svgIcon, svgIcon3);
+    manipulateClass(svgIcon2);
   } else if (target.className === "btn-change-percent") {
     sortingPrice("Price change %");
+    deletedClass(svgIcon2, svgIcon);
+    manipulateClass(svgIcon3);
   } else {
     console.log("Для кнопик не назначено операцій");
   }
 });
+
 function createDataTable(array: Coin[] | null, elem: HTMLTableSectionElement) {
   let rowsHTML = ""; // змінна для накопичення HTML-рядків
   if (array === null) {
